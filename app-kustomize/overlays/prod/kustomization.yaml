@@ -1,0 +1,21 @@
+resources:
+- ../../base
+
+namePrefix: dev-
+
+replicas:
+- name: nginx
+  count: 1
+
+patches:
+- target:
+    kind: Deployment
+    name: nginx
+  patch: |-
+    - op: add
+      path: /spec/template/spec/containers/0/command
+      value: ["/bin/sh", "-c"]
+    - op: add
+      path: /spec/template/spec/containers/0/args
+      value:
+        - echo "<h1>Hello Ammar Prod environment</h1>" > /usr/share/nginx/html/index.html && nginx -g 'daemon off;'
